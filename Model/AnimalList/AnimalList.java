@@ -1,6 +1,8 @@
 package Code.Model.AnimalList;
 
 import Code.Model.Animals.Animal;
+import Code.Model.Animals.PackAnimal;
+import Code.Model.Animals.PetAnimal;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -15,10 +17,10 @@ public class AnimalList<Animal extends AnimalItem> implements Iterable<Animal> {
         animal.setId(animalList.size());
     }
 
+
     public void removeAnimal(Animal animal) {
         animalList.remove(animal);
     }
-
 
 
     @Override

@@ -6,22 +6,19 @@ import java.util.List;
 
 import Code.Model.AnimalList.AnimalItem;
 
-public  class Animal implements AnimalItem<Animal> {
+public abstract class Animal implements AnimalItem<Animal> {
 
-    private int id;
-    private AnimalSpecies animalSpecies;
-    private String name;
-    private LocalDate birthDay;
-    private List <String> commands;
+    protected int id;
+    protected AnimalSpecies animalSpecies;
+    protected String name;
+    protected LocalDate birthDay;
+    protected List <String> commands;
+    protected String status;
 
-    public Animal(AnimalSpecies animalSpecies, String name, LocalDate birthDay, List <String> commands) {
-        this.animalSpecies = animalSpecies;
-        this.name = name;
-        this.birthDay = birthDay;
-        this.commands = new ArrayList<>(commands);
+
+    public String getStatus() {
+        return status;
     }
-
-
 
     public AnimalSpecies getAnimalSpecies() {
         return animalSpecies;

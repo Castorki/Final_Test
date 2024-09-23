@@ -24,8 +24,13 @@ public class Presenter {
    }
 
 
-    public void addAnimal(AnimalSpecies animalSpecies, String name, LocalDate birthDay, List<String> commands){
-        service.addAnimal(animalSpecies, name, birthDay, commands);
+    public void addPetAnimal(String status, AnimalSpecies animalSpecies, String name, LocalDate birthDay, List<String> commands){
+        service.addPetAnimal(status, animalSpecies, name, birthDay, commands);
+        updateView();
+    }
+
+    public void addPackAnimal(String status, AnimalSpecies animalSpecies, String name, LocalDate birthDay, List<String> commands){
+        service.addPackAnimal(status, animalSpecies, name, birthDay, commands);
         updateView();
     }
 

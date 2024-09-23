@@ -39,7 +39,7 @@ public class ConsoleUI implements View{
 
     }
 
-    public void addAnimal(){
+    public void addAnimal() {
         System.out.println("Введите название вида животного: ");
         AnimalSpecies species = AnimalSpecies.valueOf(scanner.nextLine());
         System.out.println("Введите имя животного: ");
@@ -48,7 +48,13 @@ public class ConsoleUI implements View{
         LocalDate birthDay = LocalDate.parse(scanner.nextLine());
         System.out.println("Введите команды, которые знает животное: ");
         String[] commands = scanner.nextLine().split("\\s*,\\s*");
-        presenter.addAnimal(species, name, birthDay, List.of(commands));
+        System.out.println("К какому классу отнести данное животное: домашнее или вьючное: ");
+        String className = scanner.nextLine();
+        if (className.equals("домашнее")) {
+            presenter.addPetAnimal(className, species, name, birthDay, List.of(commands));
+        } else if (className.equals("вьючное")) {
+            presenter.addPackAnimal(className, species, name, birthDay, List.of(commands));
+        }
     }
 
     public void removeAnimal(){
