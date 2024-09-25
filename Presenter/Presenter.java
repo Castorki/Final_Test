@@ -43,4 +43,56 @@ public class Presenter {
     updateView();
    }
 
+   public void sortByName(){
+       service.sortByName();
+       updateView();
+   }
+
+    public void sortByAge(){
+        service.sortByAge();
+        updateView();
+    }
+
+    public void sortByClass(String className){
+        String info = service.sortByClass(className);
+        view.printAnswer(info);
+    }
+
+    public void updateName(String name, int idAnimal){
+        service.updateName(name, idAnimal);
+        updateView();
+    }
+
+    public void updateBirthday(LocalDate birthday , int idAnimal){
+        service.updateBirthday(birthday, idAnimal);
+        updateView();
+    }
+
+    public void updateAnimalSpecies(AnimalSpecies animalSpecies  , int idAnimal){
+        service.updateAnimalSpecies(animalSpecies, idAnimal);
+        updateView();
+    }
+
+    public void getAnimalInfo(int idAnimal){
+        service.getAnimalInfo(idAnimal);
+    }
+
+    public void updateAnimalClass(String newClass, int idAnimal) {
+        service.updateAnimalClass(newClass, idAnimal);
+        updateView();
+    }
+
+    public void addCommand(String newCommand, int idAnimal) {
+        service.addAnimalCommand(idAnimal, newCommand);
+        updateView();
+    }
+
+    public void removeCommand(String command, int idAnimal) {
+        service.removeAnimalCommand(idAnimal, command);
+        updateView();
+    }
+
+    public void showCommands(int idAnimal) {
+        service.showCommands(idAnimal);
+    }
 }

@@ -1,11 +1,10 @@
 package Code.Model.Animals.Comparators;
-
 import Code.Model.AnimalList.AnimalItem;
 import Code.Model.Animals.Animal;
 
 import java.util.Comparator;
 
-public class ComparingByClass <Animals extends AnimalItem> implements Comparator<Animal> {
+public class ComparingByClass <Animal extends AnimalItem> implements Comparator<Animal> {
 
 
     @Override

@@ -1,10 +1,9 @@
 package Code.Model.AnimalList;
 
 import Code.Model.Animals.Animal;
-import Code.Model.Animals.PackAnimal;
-import Code.Model.Animals.PetAnimal;
-
+import Code.Model.Animals.Comparators.*;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
@@ -26,5 +25,17 @@ public class AnimalList<Animal extends AnimalItem> implements Iterable<Animal> {
     @Override
     public Iterator<Animal> iterator() {
         return new AnimalIterator<>(animalList);
+    }
+
+    public void  sortByName(){
+        animalList.sort(new ComparingByName<>());
+    }
+
+    public void sortByAge(){
+        animalList.sort(new ComparingByAge<>());
+    }
+
+    public void sortByClass(){
+        animalList.sort(new ComparingByClass<>());
     }
 }

@@ -1,7 +1,6 @@
 package Code.Model.Animals;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 import Code.Model.AnimalList.AnimalItem;
@@ -18,6 +17,10 @@ public abstract class Animal implements AnimalItem<Animal> {
 
     public String getStatus() {
         return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public AnimalSpecies getAnimalSpecies() {
@@ -64,6 +67,8 @@ public abstract class Animal implements AnimalItem<Animal> {
         LocalDate today = LocalDate.now();
         return today.getYear() - birthDay.getYear();
     }
+
+
 
 
     public String getAnimalCommands() {

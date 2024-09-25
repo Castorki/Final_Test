@@ -8,13 +8,22 @@ import java.util.List;
 public class MainMenu {
     private List<Command> commandList;
 
+
     public MainMenu(ConsoleUI consoleUI) {
         commandList = new ArrayList<Command>();
         commandList.add(new AddAnimal(consoleUI));
         commandList.add(new RemoveAnimal(consoleUI));
         commandList.add(new GetAnimalList(consoleUI));
+        commandList.add(new SortByName(consoleUI));
+        commandList.add(new SortByAge(consoleUI));
+        commandList.add(new SortByClass(consoleUI));
+        commandList.add(new UpdateAnimal(consoleUI));
+        commandList.add(new GetAnimalInfo(consoleUI));
+        commandList.add((new ShowCommands(consoleUI)));
         commandList.add(new Finish(consoleUI));
     }
+
+
 
     public String menu(){
     StringBuilder stringBuilder = new StringBuilder();
@@ -26,6 +35,8 @@ public class MainMenu {
         }
         return stringBuilder.toString();
     }
+
+
 
     public void execute(int choice){
         Command command = commandList.get(choice-1);
