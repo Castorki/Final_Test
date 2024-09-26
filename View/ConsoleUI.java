@@ -1,8 +1,9 @@
 package Code.View;
 
 import java.time.LocalDate;
-import java.util.List;
-import java.util.Scanner;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.util.*;
 
 import Code.Model.Animals.AnimalSpecies;
 import Code.Presenter.*;
@@ -16,6 +17,9 @@ public class ConsoleUI implements View{
     private final MainMenu menu;
     private final ParametersMenu parameters;
     private boolean update;
+    private boolean validDate;
+
+
 
     public ConsoleUI(){
         scanner = new Scanner(System.in);
@@ -24,6 +28,7 @@ public class ConsoleUI implements View{
         presenter = new Presenter(this);
         parameters = new ParametersMenu(this);
         update = true;
+        validDate = false;
     }
 
 
@@ -42,28 +47,42 @@ public class ConsoleUI implements View{
 
     }
 
+    public void hello(){
+        System.out.println("Здравствуйте!\n");
+    }
+
     public void addAnimal() {
+
         System.out.println("Введите название вида животного: ");
-        AnimalSpecies species = AnimalSpecies.valueOf(scanner.nextLine());
+        AnimalSpecies species = checkTextForAnimalSpeciesParse(validDate);
         System.out.println("Введите имя животного: ");
         String name = scanner.nextLine();
         System.out.println("Введите дату рождения животного (yyyy-MM-dd): ");
-        LocalDate birthDay = LocalDate.parse(scanner.nextLine());
+        LocalDate birthDay = checkTextForLocalDateParse(validDate);
         System.out.println("Введите команды, которые знает животное: ");
         String[] commands = scanner.nextLine().split("\\s*,\\s*");
         System.out.println("К какому классу отнести данное животное: домашнее (pet) или вьючное (pack): ");
-        String className = scanner.nextLine();
-        if (className.equals("домашнее") || className.equals("pet")) {
-            presenter.addPetAnimal(className, species, name, birthDay, List.of(commands));
-        } else if (className.equals("вьючное") || className.equals("pack")) {
-            presenter.addPackAnimal(className, species, name, birthDay, List.of(commands));
+        while (!validDate) {
+            String className = scanner.nextLine();
+            if (className.equals("домашнее") || className.equals("pet")) {
+                presenter.addPetAnimal(className, species, name, birthDay, List.of(commands));
+                validDate = true;
+            } else if (className.equals("вьючное") || className.equals("pack")) {
+                presenter.addPackAnimal(className, species, name, birthDay, List.of(commands));
+                validDate = true;
+            } else {
+                inputError();
+            }
         }
+        presenter.addCounter();
     }
 
     public void removeAnimal(){
         System.out.println("Введите id животного для удаления: ");
         int idAnimal = Integer.parseInt(scanner.nextLine());
-        presenter.removeAnimal(idAnimal);
+        if(checkId(idAnimal)){
+            presenter.removeAnimal(idAnimal);
+        }
     }
 
     public void updateAnimal(){
@@ -73,9 +92,9 @@ public class ConsoleUI implements View{
             System.out.println("Какой параметр хотите обновить: ");
             printParametersMenu();
             String choice = scanner.nextLine();
-            if (CheckTextForIntParse(choice)) {
+            if (checkTextForIntParse(choice)) {
                 int number = Integer.parseInt(choice);
-                if (CheckValuableParameter(number)) {
+                if (checkValuableParameter(number)) {
                     parameters.execute(number, idAnimal);
                 }
             }
@@ -85,11 +104,16 @@ public class ConsoleUI implements View{
     public void updateCommands(int idAnimal){
         System.out.println("Вы хотите удалить (delete) или добавить (add) команду: ");
         String choice = scanner.nextLine();
-        if(choice.equals("добавить") || choice.equals("add")){
-            addCommand(idAnimal);
-        }
-        if(choice.equals("удалить") || choice.equals("delete")) {
-            removeCommand(idAnimal);
+        while (!validDate) {
+            if (choice.equals("добавить") || choice.equals("add")) {
+                addCommand(idAnimal);
+                validDate = true;
+            } else if (choice.equals("удалить") || choice.equals("delete")) {
+                removeCommand(idAnimal);
+                validDate = true;
+            } else {
+                inputError();
+            }
         }
     }
 
@@ -97,8 +121,11 @@ public class ConsoleUI implements View{
     public int getAnimalInfo(){
         System.out.println("Введите id животного для получения информации: ");
         int idAnimal = Integer.parseInt(scanner.nextLine());
-        presenter.getAnimalInfo(idAnimal);
-        return idAnimal;
+        if(checkId(idAnimal)){
+            presenter.getAnimalInfo(idAnimal);
+            return idAnimal;
+        }
+        return -1;
     }
 
     public void updateAnimalName(int idAnimal){
@@ -109,13 +136,13 @@ public class ConsoleUI implements View{
 
     public void updateAnimalBirthday(int idAnimal){
         System.out.println("Введите новую дату рождения животного: ");
-        LocalDate newBirthday = LocalDate.parse(scanner.nextLine());
+        LocalDate newBirthday = checkTextForLocalDateParse(validDate);
         presenter.updateBirthday(newBirthday, idAnimal);
     }
 
     public void updateAnimalSpecies(int idAnimal){
         System.out.println("Введите новый вид животного: ");
-        AnimalSpecies animalSpecies = AnimalSpecies.valueOf(scanner.nextLine());
+        AnimalSpecies animalSpecies = checkTextForAnimalSpeciesParse(validDate);
         presenter.updateAnimalSpecies(animalSpecies, idAnimal);
     }
 
@@ -134,7 +161,10 @@ public class ConsoleUI implements View{
     public void removeCommand(int idAnimal) {
         System.out.println("Введите команду, которую хотите удалить: ");
         String command = scanner.nextLine();
-        presenter.removeCommand(command, idAnimal);
+        if(checkCommands(idAnimal, command)){
+            presenter.removeCommand(command, idAnimal);
+            presenter.minusCounter();
+        }
     }
 
     public void showCommands(){
@@ -159,21 +189,19 @@ public class ConsoleUI implements View{
         String className = scanner.nextLine();
         presenter.sortByClass(className);
     }
-    public void finish() {
-        System.out.println("До свидания!");
-        work = false;
-    }
 
     public void endUpdating(){
         System.out.println("Обновление завершено!");
         update = false;
     }
 
-    public void hello(){
-        System.out.println("Здравствуйте!");
+    public void finish() {
+        System.out.println("До свидания!");
+        work = false;
     }
 
     public void printMenu(){
+        System.out.println("Количесво животных в питомнике: " + presenter.getCount() + "\n");
         System.out.println(menu.menu());
     }
 
@@ -183,15 +211,15 @@ public class ConsoleUI implements View{
 
     public void execute(){
         String choice = scanner.nextLine();
-        if(CheckTextForIntParse(choice)){
+        if(checkTextForIntParse(choice)){
             int number = Integer.parseInt(choice);
-            if (CheckValuableCommand(number)){
+            if (checkValuableCommand(number)){
                 menu.execute(number);
             }
         }
     }
 
-    public boolean CheckTextForIntParse(String text){
+    public boolean checkTextForIntParse(String text){
         if(text.matches("[0-9]+")){
             return true;
         }
@@ -201,7 +229,55 @@ public class ConsoleUI implements View{
         }
     }
 
-    public boolean CheckValuableCommand(int number){
+    public LocalDate checkTextForLocalDateParse(boolean validDate){
+        while (!validDate) {
+            String input = scanner.nextLine();
+
+            try {
+                LocalDate birthDate = LocalDate.parse(input, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+                validDate = true;
+                return birthDate;
+            } catch (DateTimeParseException e) {
+                System.err.println("Неверное значение. Введите дату в формате yyyy-MM-dd.");
+            }
+        }
+        return null;
+    }
+
+    public AnimalSpecies checkTextForAnimalSpeciesParse(boolean validDate){
+        List<String> s = List.of("Cat", "Dog", "Hamster", "Horse", "Camel", "Donkey");
+        while (!validDate) {
+                String input = scanner.nextLine();
+                try {
+                    AnimalSpecies spicy = AnimalSpecies.valueOf(input.formatted(s));
+                    validDate = true;
+                    return spicy;
+                }
+                catch (IllegalArgumentException e){
+                    System.err.println("""
+                            Неверное значение. Введите данные из списка ниже: Cat,
+                                Dog,
+                                Hamster,
+                                Horse,
+                                Camel,
+                                Donkey""");
+                }
+        }
+        return null;
+    }
+
+    public boolean checkCommands(int idAnimal, String command){
+        String commands = presenter.getAnimalCommands(idAnimal);
+            if(commands.contains(command)){
+                return true;
+            }
+            else {
+                inputError();
+                return false;
+            }
+    }
+
+    public boolean checkValuableCommand(int number){
         if(number <= menu.getSize()){
             return true;
         }
@@ -210,7 +286,7 @@ public class ConsoleUI implements View{
             return false;
         }
     }
-    public boolean CheckValuableParameter(int number){
+    public boolean checkValuableParameter(int number){
         if(number <= parameters.getSize()){
             return true;
         }
@@ -220,8 +296,20 @@ public class ConsoleUI implements View{
         }
     }
 
+    public boolean checkId(int number){
+        if(number <= presenter.getAnimalisticSize()){
+            return true;
+        }
+        else{
+            inputError();
+            return false;
+        }
+    }
+
+
+
     public void inputError(){
-        System.out.println(INPUT_ERROR);
+        System.out.println(INPUT_ERROR + "\n");
     }
 
 

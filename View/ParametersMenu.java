@@ -9,7 +9,7 @@ public class ParametersMenu {
     private final List<Parameter> parametersList;
 
     public ParametersMenu(ConsoleUI consoleUI){
-        parametersList = new ArrayList<Parameter>();
+        parametersList = new ArrayList<>();
         parametersList.add(new UpdateName(consoleUI));
         parametersList.add(new UpdateBirthday(consoleUI));
         parametersList.add(new UpdateAnimalSpecies(consoleUI));
@@ -37,4 +37,6 @@ public class ParametersMenu {
     public int getSize() {
         return parametersList.size();
     }
+
+
 }

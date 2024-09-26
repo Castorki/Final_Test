@@ -95,4 +95,29 @@ public class Presenter {
     public void showCommands(int idAnimal) {
         service.showCommands(idAnimal);
     }
+
+    public void addCounter(){
+        try {
+            service.addCount();
+        }
+        catch (Exception e) {
+            System.err.println(e.getMessage());
+        }
+    }
+
+    public int getCount() {
+        return service.getCount();
+    }
+
+    public int getAnimalisticSize() {
+        return service.getAnimalisticSize();
+    }
+
+    public String getAnimalCommands(int idAnimal) {
+        return service.getAnimalCommands(idAnimal);
+    }
+
+    public void minusCounter() {
+        service.minusCount();
+    }
 }

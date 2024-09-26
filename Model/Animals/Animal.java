@@ -23,9 +23,6 @@ public abstract class Animal implements AnimalItem<Animal> {
         this.status = status;
     }
 
-    public AnimalSpecies getAnimalSpecies() {
-        return animalSpecies;
-    }
 
     public void setAnimalSpecies(AnimalSpecies animalSpecies) {
         this.animalSpecies = animalSpecies;
@@ -37,10 +34,6 @@ public abstract class Animal implements AnimalItem<Animal> {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public LocalDate getBirthDay() {
-        return birthDay;
     }
 
     public void setBirthDay(LocalDate birthDay) {

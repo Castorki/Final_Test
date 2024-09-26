@@ -2,10 +2,7 @@ package Code.View.Parameters;
 
 import Code.View.ConsoleUI;
 
-import java.util.Scanner;
-
 public class UpdateCommands extends Parameter{
-    private Scanner scanner;
 
     public UpdateCommands(ConsoleUI consoleUI){
         super(consoleUI);

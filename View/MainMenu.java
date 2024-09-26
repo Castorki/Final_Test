@@ -6,11 +6,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainMenu {
-    private List<Command> commandList;
+    private final List<Command> commandList;
 
 
     public MainMenu(ConsoleUI consoleUI) {
-        commandList = new ArrayList<Command>();
+        commandList = new ArrayList<>();
         commandList.add(new AddAnimal(consoleUI));
         commandList.add(new RemoveAnimal(consoleUI));
         commandList.add(new GetAnimalList(consoleUI));

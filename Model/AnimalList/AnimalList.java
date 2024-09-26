@@ -1,9 +1,7 @@
 package Code.Model.AnimalList;
 
-import Code.Model.Animals.Animal;
 import Code.Model.Animals.Comparators.*;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
@@ -35,7 +33,7 @@ public class AnimalList<Animal extends AnimalItem> implements Iterable<Animal> {
         animalList.sort(new ComparingByAge<>());
     }
 
-    public void sortByClass(){
-        animalList.sort(new ComparingByClass<>());
+    public int getSize() {
+        return animalList.size();
     }
 }

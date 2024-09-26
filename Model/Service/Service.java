@@ -2,6 +2,7 @@ package Code.Model.Service;
 
 import Code.Model.AnimalList.AnimalList;
 import Code.Model.Animals.*;
+import Code.Model.Counter.Counter;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -10,12 +11,13 @@ public class Service {
     private final AnimalList<Animal> service;
     private final AnimalList<PetAnimal> petAnimals;
     private final AnimalList<PackAnimal> packAnimals;
-    private int idAnimal;
+    private final Counter counter = new Counter();
 
     public Service() {
         service = new AnimalList<>();
         petAnimals = new AnimalList<>();
         packAnimals = new AnimalList<>();
+
     }
 
 
@@ -101,7 +103,7 @@ public class Service {
             }
         }
         return stringBuilder.toString();
-    };
+    }
 
     public void getAnimalInfo(int idAnimal){
         Animal animal = getAnimalById(idAnimal);
@@ -112,5 +114,26 @@ public class Service {
     public void showCommands(int idAnimal) {
         Animal animal = getAnimalById(idAnimal);
         System.out.println("Команды животного: " + animal.getAnimalCommands());
+    }
+
+    public void addCount(){
+        counter.add();
+    }
+
+    public int getCount() {
+        return counter.getCount();
+    }
+
+    public int getAnimalisticSize() {
+        return service.getSize();
+    }
+
+    public String getAnimalCommands(int idAnimal) {
+        Animal animal = getAnimalById(idAnimal);
+        return animal.getAnimalCommands();
+    }
+
+    public void minusCount() {
+        counter.minus();
     }
 }

@@ -6,7 +6,7 @@ public class SortByAge extends Command{
 
     public SortByAge(ConsoleUI consoleUI) {
         super(consoleUI);
-        description = "Сортировать по возрасту (по возврастанию)";
+        description = "Сортировать по возрасту";
     }
 
     @Override
