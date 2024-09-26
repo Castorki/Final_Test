@@ -52,7 +52,7 @@ public class ConsoleUI implements View{
     }
 
     public void addAnimal() {
-
+        validDate = false;
         System.out.println("Введите название вида животного: ");
         AnimalSpecies species = checkTextForAnimalSpeciesParse(validDate);
         System.out.println("Введите имя животного: ");
@@ -63,7 +63,7 @@ public class ConsoleUI implements View{
         String[] commands = scanner.nextLine().split("\\s*,\\s*");
         System.out.println("К какому классу отнести данное животное: домашнее (pet) или вьючное (pack): ");
         while (!validDate) {
-            String className = scanner.nextLine();
+            String className = scanner.nextLine().toLowerCase();
             if (className.equals("домашнее") || className.equals("pet")) {
                 presenter.addPetAnimal(className, species, name, birthDay, List.of(commands));
                 validDate = true;
@@ -82,6 +82,7 @@ public class ConsoleUI implements View{
         int idAnimal = Integer.parseInt(scanner.nextLine());
         if(checkId(idAnimal)){
             presenter.removeAnimal(idAnimal);
+            presenter.minusCounter();
         }
     }
 
@@ -160,10 +161,9 @@ public class ConsoleUI implements View{
 
     public void removeCommand(int idAnimal) {
         System.out.println("Введите команду, которую хотите удалить: ");
-        String command = scanner.nextLine();
+        String command = scanner.nextLine().toLowerCase();
         if(checkCommands(idAnimal, command)){
             presenter.removeCommand(command, idAnimal);
-            presenter.minusCounter();
         }
     }
 
@@ -193,6 +193,17 @@ public class ConsoleUI implements View{
     public void endUpdating(){
         System.out.println("Обновление завершено!");
         update = false;
+    }
+    public void saveToFile() {
+        System.out.println("Напишите название для сохранения файла: ");
+        String fileName = scanner.nextLine();
+        presenter.saveToFile(fileName);
+    }
+
+    public void loadFromFile() {
+        System.out.println("Напишите название файла из которого выгрузить данные: ");
+        String fileName = scanner.nextLine();
+        presenter.loadFromFile(fileName);
     }
 
     public void finish() {
@@ -247,7 +258,7 @@ public class ConsoleUI implements View{
     public AnimalSpecies checkTextForAnimalSpeciesParse(boolean validDate){
         List<String> s = List.of("Cat", "Dog", "Hamster", "Horse", "Camel", "Donkey");
         while (!validDate) {
-                String input = scanner.nextLine();
+                String input = scanner.nextLine().toLowerCase();
                 try {
                     AnimalSpecies spicy = AnimalSpecies.valueOf(input.formatted(s));
                     validDate = true;
@@ -267,7 +278,7 @@ public class ConsoleUI implements View{
     }
 
     public boolean checkCommands(int idAnimal, String command){
-        String commands = presenter.getAnimalCommands(idAnimal);
+        String commands = presenter.getAnimalCommands(idAnimal).toLowerCase();
             if(commands.contains(command)){
                 return true;
             }

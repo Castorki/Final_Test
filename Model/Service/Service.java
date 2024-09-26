@@ -3,20 +3,23 @@ package Code.Model.Service;
 import Code.Model.AnimalList.AnimalList;
 import Code.Model.Animals.*;
 import Code.Model.Counter.Counter;
-
+import Code.Model.Writer.FileHandler;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
 
 public class Service {
-    private final AnimalList<Animal> service;
+    private AnimalList<Animal> service;
     private final AnimalList<PetAnimal> petAnimals;
     private final AnimalList<PackAnimal> packAnimals;
     private final Counter counter = new Counter();
+    private final SaverLoader<AnimalList<Animal>> saverLoader;
 
     public Service() {
         service = new AnimalList<>();
         petAnimals = new AnimalList<>();
         packAnimals = new AnimalList<>();
+        saverLoader = new SaverLoader<>(new FileHandler());
 
     }
 
@@ -135,5 +138,16 @@ public class Service {
 
     public void minusCount() {
         counter.minus();
+    }
+
+    public void saveToFile(String fileName) throws IOException {
+        saverLoader.saveToFile(service, fileName);
+    }
+
+    public void loadFromFile(String fileName) throws IOException, ClassNotFoundException {
+        AnimalList<Animal> loadedTree = saverLoader.loadFromFile(fileName);
+        if (loadedTree != null) {
+            this.service = loadedTree;
+        }
     }
 }

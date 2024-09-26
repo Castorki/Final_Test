@@ -1,5 +1,6 @@
 package Code.Presenter;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -119,5 +120,24 @@ public class Presenter {
 
     public void minusCounter() {
         service.minusCount();
+    }
+
+    public void saveToFile(String fileName) {
+        try {
+            service.saveToFile(fileName);
+            view.printAnswer("Список животных сохранен в файл: " + fileName);
+        } catch (IOException e) {
+            view.printAnswer("Ошибка сохранения списка животных: " + e.getMessage());
+        }
+    }
+
+    public void loadFromFile(String fileName) {
+        try {
+            service.loadFromFile(fileName);
+            view.printAnswer("Список животных успешно загружен из файла: " + fileName);
+            updateView();
+        } catch (IOException | ClassNotFoundException e) {
+            view.printAnswer("Ошибка загрузки списка животных: " + e.getMessage());
+        }
     }
 }

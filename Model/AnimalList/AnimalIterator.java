@@ -3,7 +3,7 @@ import java.util.Iterator;
 import java.util.List;
 
 
-public class AnimalIterator<Animal> implements Iterator<Animal> {
+public class AnimalIterator<Animal> implements Iterator<Animal>{
 
     private int id;
     private final List<Animal> animalList;

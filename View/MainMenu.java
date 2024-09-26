@@ -20,6 +20,8 @@ public class MainMenu {
         commandList.add(new UpdateAnimal(consoleUI));
         commandList.add(new GetAnimalInfo(consoleUI));
         commandList.add((new ShowCommands(consoleUI)));
+        commandList.add(new SaveToFile(consoleUI));
+        commandList.add(new LoadFromFile(consoleUI));
         commandList.add(new Finish(consoleUI));
     }
 

@@ -1,11 +1,12 @@
 package Code.Model.Animals;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.List;
 
 import Code.Model.AnimalList.AnimalItem;
 
-public abstract class Animal implements AnimalItem<Animal> {
+public abstract class Animal implements AnimalItem<Animal> , Serializable {
 
     protected int id;
     protected AnimalSpecies animalSpecies;

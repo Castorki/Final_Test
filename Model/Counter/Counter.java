@@ -1,6 +1,7 @@
 package Code.Model.Counter;
 
-public class Counter implements AutoCloseable {
+
+public class Counter implements AutoCloseable{
     private int count;
     private boolean isClosed;
 

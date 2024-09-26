@@ -1,11 +1,13 @@
 package Code.Model.AnimalList;
 
 import Code.Model.Animals.Comparators.*;
+
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-public class AnimalList<Animal extends AnimalItem> implements Iterable<Animal> {
+public class AnimalList<Animal extends AnimalItem> implements Iterable<Animal>, Serializable {
     private final List<Animal> animalList = new ArrayList<>();
 
 
