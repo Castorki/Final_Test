@@ -38,4 +38,11 @@ public class AnimalList<Animal extends AnimalItem> implements Iterable<Animal>, 
     public int getSize() {
         return animalList.size();
     }
+
+    public String checkAnimalList(){
+        if(animalList.isEmpty()){
+            return null;
+        }
+        return "Спимок заполнен";
+    }
 }

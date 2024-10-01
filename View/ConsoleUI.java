@@ -78,25 +78,33 @@ public class ConsoleUI implements View{
     }
 
     public void removeAnimal(){
-        System.out.println("Введите id животного для удаления: ");
-        int idAnimal = Integer.parseInt(scanner.nextLine());
-        if(checkId(idAnimal)){
-            presenter.removeAnimal(idAnimal);
-            presenter.minusCounter();
+        String checkList = checkAnimalList();
+        if(checkList!= null) {
+            System.out.println("Введите id животного для удаления: ");
+            int idAnimal = Integer.parseInt(scanner.nextLine());
+            if (checkId(idAnimal)) {
+                presenter.removeAnimal(idAnimal);
+                presenter.minusCounter();
+            }
         }
     }
 
     public void updateAnimal(){
-        update = true;
-        int idAnimal = getAnimalInfo();
-        while (update){
-            System.out.println("Какой параметр хотите обновить: ");
-            printParametersMenu();
-            String choice = scanner.nextLine();
-            if (checkTextForIntParse(choice)) {
-                int number = Integer.parseInt(choice);
-                if (checkValuableParameter(number)) {
-                    parameters.execute(number, idAnimal);
+        String checkList = checkAnimalList();
+        if(checkList!= null) {
+            int idAnimal = getAnimalInfo();
+            if (idAnimal == -1) {
+                update = false;
+            }
+            while (update) {
+                System.out.println("Какой параметр хотите обновить: ");
+                printParametersMenu();
+                String choice = scanner.nextLine();
+                if (checkTextForIntParse(choice)) {
+                    int number = Integer.parseInt(choice);
+                    if (checkValuableParameter(number)) {
+                        parameters.execute(number, idAnimal);
+                    }
                 }
             }
         }
@@ -105,6 +113,7 @@ public class ConsoleUI implements View{
     public void updateCommands(int idAnimal){
         System.out.println("Вы хотите удалить (delete) или добавить (add) команду: ");
         String choice = scanner.nextLine();
+        validDate = false;
         while (!validDate) {
             if (choice.equals("добавить") || choice.equals("add")) {
                 addCommand(idAnimal);
@@ -120,14 +129,20 @@ public class ConsoleUI implements View{
 
 
     public int getAnimalInfo(){
-        System.out.println("Введите id животного для получения информации: ");
-        int idAnimal = Integer.parseInt(scanner.nextLine());
-        if(checkId(idAnimal)){
-            presenter.getAnimalInfo(idAnimal);
-            return idAnimal;
+        String checkList = checkAnimalList();
+        if(checkList!= null)
+        {
+            System.out.println("Введите id животного для получения информации: ");
+            int idAnimal = Integer.parseInt(scanner.nextLine());
+            if (checkId(idAnimal)) {
+                presenter.getAnimalInfo(idAnimal);
+                return idAnimal;
+            }
         }
         return -1;
     }
+
+
 
     public void updateAnimalName(int idAnimal){
         System.out.println("Введите новое имя животного: ");
@@ -168,8 +183,19 @@ public class ConsoleUI implements View{
     }
 
     public void showCommands(){
-        int idAnimal = getAnimalInfo();
-        presenter.showCommands(idAnimal);
+        String checkList = checkAnimalList();
+        if(checkList!= null) {
+            while (update) {
+                int idAnimal = getAnimalInfo();
+                if (idAnimal == -1) {
+                    System.out.println("Выберете верное id животного");
+                    presenter.getAnimalList();
+                } else {
+                    presenter.showCommands(idAnimal);
+                    update = false;
+                }
+            }
+        }
     }
 
     public void getAnimalList(){
@@ -177,17 +203,31 @@ public class ConsoleUI implements View{
     }
 
     public void sortByName(){
-        presenter.sortByName();
+        String checkList = checkAnimalList();
+        if(checkList!= null) {
+            presenter.sortByName();
+        }
     }
 
     public void sortByAge(){
-        presenter.sortByAge();
+        String checkList = checkAnimalList();
+        if(checkList!= null) {
+            presenter.sortByAge();
+        }
     }
 
     public void sortByClass(){
-        System.out.println("Животных какого класса вы хотите увидеть: ");
-        String className = scanner.nextLine();
-        presenter.sortByClass(className);
+        String checkList = checkAnimalList();
+        if(checkList!= null) {
+            System.out.println("Животных какого класса вы хотите увидеть: ");
+            String className = scanner.nextLine();
+            if (className.equals("домашнее") || className.equals("pet") || className.equals("pack") ||
+                    className.equals("вьючное")) {
+                presenter.sortByClass(className);
+            } else {
+                System.out.println("Неверный класс");
+            }
+        }
     }
 
     public void endUpdating(){
@@ -197,13 +237,24 @@ public class ConsoleUI implements View{
     public void saveToFile() {
         System.out.println("Напишите название для сохранения файла: ");
         String fileName = scanner.nextLine();
-        presenter.saveToFile(fileName);
+        if(fileName.endsWith(".txt")) {
+            presenter.saveToFile(fileName);
+        }
+        else{
+            System.out.println("Отсутствует или неверно введено расширение файла. Ожидается '.txt' ");
+        }
     }
 
     public void loadFromFile() {
         System.out.println("Напишите название файла из которого выгрузить данные: ");
         String fileName = scanner.nextLine();
-        presenter.loadFromFile(fileName);
+        if (fileName.endsWith(".txt")) {
+            presenter.loadFromFile(fileName);
+        }
+        else {
+            fileName = fileName + ".txt";
+            presenter.loadFromFile(fileName);
+        }
     }
 
     public void finish() {
@@ -212,7 +263,7 @@ public class ConsoleUI implements View{
     }
 
     public void printMenu(){
-        System.out.println("Количесво животных в питомнике: " + presenter.getCount() + "\n");
+        System.out.println("Количесво животных в питомнике: " + presenter.getAnimalisticSize() + "\n");
         System.out.println(menu.menu());
     }
 
@@ -317,6 +368,14 @@ public class ConsoleUI implements View{
         }
     }
 
+    private String checkAnimalList() {
+        String checkList = presenter.checkAnimalList();
+        if(checkList == null || checkList.isEmpty()){
+            System.out.println("Список животных пуст. Данное действие невозможно." + "\n");
+            return null;
+        }
+        return "Действие доступно";
+    }
 
 
     public void inputError(){

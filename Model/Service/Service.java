@@ -50,13 +50,17 @@ public class Service {
     }
 
     public String getAnimalList(){
-        StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append("Список животных в зоопарке:\n");
-        for (Animal animal : service){
-            stringBuilder.append(animal);
-            stringBuilder.append("\n");
+        String checkList = checkAnimalList();
+        if(checkList!= null) {
+            StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.append("Список животных в зоопарке:\n");
+            for (Animal animal : service) {
+                stringBuilder.append(animal);
+                stringBuilder.append("\n");
+            }
+            return stringBuilder.toString();
         }
-        return stringBuilder.toString();
+        return "Список животных пуст." + "\n";
     }
 
     public void addAnimalCommand(int idAnimal, String command) {
@@ -150,4 +154,9 @@ public class Service {
             this.service = loadedTree;
         }
     }
+
+    public String checkAnimalList() {
+        return service.checkAnimalList();
+    }
+
 }

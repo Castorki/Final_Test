@@ -140,4 +140,8 @@ public class Presenter {
             view.printAnswer("Ошибка загрузки списка животных: " + e.getMessage());
         }
     }
+
+    public String checkAnimalList() {
+        return service.checkAnimalList();
+    }
 }
